@@ -11,21 +11,33 @@ var level = 0;
 
 var started = false;
 
+// at first disabled all the 4 colours buttons
+disableDifficultyOptions(".btn");
+
+// initilization when game start by key  
 $(document).keydown(function(){
     if (started === false){
         nextSequence();
         $(".title").text("Level " + level);
         started = true;
+        disableDifficultyOptions("input[name='difficulty']");
+        disableDifficultyOptions(".start");
+
+        enableDifficultyOptions(".btn");
     }
     
 })
 
-
+// initilization when game start by start button 
 $(".start").click(function(){
     if (started === false){
         nextSequence();
         $(".title").text("Level " + level);
         started = true;
+        disableDifficultyOptions("input[name='difficulty']");
+        disableDifficultyOptions(".start");
+
+        enableDifficultyOptions(".btn");
     }
     
 })
@@ -59,20 +71,41 @@ function nextSequence(){
     gamePattern.push(randomChosenColour);
 
 
+    if ($("#normal").prop("checked")) {
+        // do something
+        // loop for all array 
+        for (let i = 0; i < gamePattern.length; i++) {
+            setTimeout(function () {
+                // Animate the faded button
+                $("#" + gamePattern[i]).fadeIn(100).fadeOut(100).fadeIn(100);
 
-    //loop for all array 
-    for (let i = 0; i < gamePattern.length; i++) {
-        setTimeout(function () {
-            // Animate the faded button
-            $("#" + gamePattern[i]).fadeIn(100).fadeOut(100).fadeIn(100);
-
-            // Play the sound of the specific color
-            playSound(gamePattern[i]);
-        }, 700 * i); // Delay each step by 700ms multiplied by the index
+                // Play the sound of the specific color
+                playSound(gamePattern[i]);
+            }, 700 * i); // Delay each step by 700ms multiplied by the index
+        }
     }
+
+    else if ($("#hard").prop("checked")) {
+        //animate the faded button
+        $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
+
+        // play the sound of the specific color
+        var audio = new Audio("sounds/" + randomChosenColour + ".mp3");
+        audio.play();
+    }
+    //loop for all array 
+    // for (let i = 0; i < gamePattern.length; i++) {
+    //     setTimeout(function () {
+    //         // Animate the faded button
+    //         $("#" + gamePattern[i]).fadeIn(100).fadeOut(100).fadeIn(100);
+
+    //         // Play the sound of the specific color
+    //         playSound(gamePattern[i]);
+    //     }, 700 * i); // Delay each step by 700ms multiplied by the index
+    // }
     
 
-    // //animate the faded button
+    //animate the faded button
     // $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
 
     // // play the sound of the specific color
@@ -119,6 +152,12 @@ function gameOver (){
     },200);
 
     $("h1").text("Game Over, Press Any Key to Restart");
+    $(".start").text("restart");
+
+    enableDifficultyOptions("input[name='difficulty']");
+    enableDifficultyOptions(".start");
+
+    disableDifficultyOptions(".btn");
 
     startOver();
 }
@@ -127,5 +166,16 @@ function startOver(){
     level = 0;
     gamePattern =[];
     started = false;
+}
+
+
+// Disable difficulty buttons when the game starts
+function disableDifficultyOptions(button) {
+    $(button).attr("disabled", true);
+}
+
+// Enable difficulty buttons when the game restarts
+function enableDifficultyOptions(button) {
+    $(button).attr("disabled", false);
 }
 

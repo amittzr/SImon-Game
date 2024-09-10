@@ -46,9 +46,15 @@ body{
 
 .start{
     margin-top: 100px;
-    width: 10rem;
+    width: fit-content;
     height: 7rem;
     font-size: x-large;
     font-family: 'Press Start 2P', cursive;
     background-color: #FEF2BF;
+}
+
+.check-box{
+    font-family: 'Press Start 2P', cursive;
+    color: aliceblue;
+    margin-bottom: 50px;
 }
